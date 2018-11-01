@@ -11,8 +11,52 @@ namespace LightsOutUniversal
         private int gridSize;
         private bool[,] grid; // Store the on/off state of the grid
         private Random rand;
-        public const int MaxGridSize = 5;
+        public const int MaxGridSize = 10;
         public const int MinGridSize = 3;
+
+        public string Grid
+        {
+            get
+            {
+                // Serialize
+                return GenerateString();
+            }
+
+            set
+            {
+                // Deserialze
+                StringToGrid(value);
+            }
+        }
+
+        private string GenerateString()
+        {
+            string gridString = "";
+
+            for (int r = 0; r < gridSize; r++)
+            {
+                for (int c = 0; c < gridSize; c++)
+                {
+                    gridString += grid[r, c] ? "T" : "F";
+                }
+            }
+
+            return gridString;
+        }
+
+        private void StringToGrid(string value)
+        {
+            int i = 0;
+            for (int r = 0; r < gridSize; r++)
+            {
+                for (int c = 0; c < gridSize; c++)
+                {
+                    grid[r, c] = value[i] == 'T';
+                    i++;
+                }
+            }
+        }
+
 
         // Returns the grid size
         public int GridSize
@@ -23,7 +67,7 @@ namespace LightsOutUniversal
             }
             set
             {
-                if (value >= MinGridSize && value <= MaxGridSize)
+                if (value >= MinGridSize && value <= MaxGridSize && value != gridSize)
                 {
                     gridSize = value;
                     grid = new bool[gridSize, gridSize];
